@@ -3,8 +3,15 @@ import { StyleSheet, SafeAreaView, Text, View } from "react-native";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 import Button from "../components/Button";
+import { useNavigation } from "@react-navigation/native";
 
 const Confirmation = () => {
+  const navigation = useNavigation();
+
+  const handleMoveOn = () => {
+    //@ts-ignore
+    navigation.navigate("plantSelect");
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -15,7 +22,7 @@ const Confirmation = () => {
         </Text>
 
         <View style={styles.footer}>
-          <Button />
+          <Button title="Começar" onPress={handleMoveOn} />
         </View>
       </View>
     </SafeAreaView>
