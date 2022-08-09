@@ -17,7 +17,7 @@ const plantSelect = () => {
 
   const getList = async () => {
     try {
-      const { data } = await api.get("plants_environments");
+      const { data } = await api.get("/plants_environments");
       console.log("data: ", data);
       setEnviroments([
         {
