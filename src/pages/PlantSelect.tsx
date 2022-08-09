@@ -6,18 +6,40 @@ import Header from "../components/Header";
 import fonts from "../styles/fonts";
 import EnviromentButton from "../components/EnviromentButton";
 import api from "../services/api";
+import { PlantCardPrimary } from "../components/PlantCardPrimary";
 
 interface EnviromentProps {
   key: string;
   title: string;
 }
 
+interface PlantProps {
+  id: string;
+  name: string;
+  about: string;
+  water_tips: string;
+  photo: string;
+  environments: [string];
+  frequency: {
+    times: number;
+    repeat_every: string;
+  };
+}
+
 const plantSelect = () => {
   const [enviroments, setEnviroments] = useState<EnviromentProps[]>([]);
+  const [plants, setPlants] = useState<PlantProps[]>([]);
+  const [enviromentsSelected, setEnviromentsSelected] = useState("all");
+
+  const handleEnviromentsSelected = (environment: string) => {
+    setEnviromentsSelected(environment);
+  };
 
   const getList = async () => {
     try {
-      const { data } = await api.get("/plants_environments");
+      const { data } = await api.get(
+        "/plants_environments?_sort=title&-order=asc"
+      );
       console.log("data: ", data);
       setEnviroments([
         {
@@ -33,7 +55,17 @@ const plantSelect = () => {
   useEffect(() => {
     // console.log("teste");
     getList();
+    getListPlant();
   }, []);
+
+  const getListPlant = async () => {
+    try {
+      const { data } = await api.get("plants?_sort=name&-order=asc");
+      setPlants(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -49,7 +81,22 @@ const plantSelect = () => {
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.enviromentList}
-          renderItem={({ item }) => <EnviromentButton title={item.title} />}
+          renderItem={({ item }) => (
+            <EnviromentButton
+              title={item.title}
+              active={item.key === enviromentsSelected}
+              onPress={() => handleEnviromentsSelected(item.key)}
+            />
+          )}
+        />
+      </View>
+      <View style={styles.plants}>
+        <FlatList
+          data={plants}
+          showsVerticalScrollIndicator={false}
+          numColumns={2}
+          contentContainerStyle={styles.contentContainerStyle}
+          renderItem={({ item }) => <PlantCardPrimary data={item} />}
         />
       </View>
     </View>
@@ -83,6 +130,11 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     marginLeft: 32,
     marginVertical: 32,
+  },
+  plants: {
+    flex: 1,
+    paddingHorizontal: 32,
+    justifyContent: "center",
   },
 });
 
