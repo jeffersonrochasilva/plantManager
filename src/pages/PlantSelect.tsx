@@ -29,10 +29,21 @@ interface PlantProps {
 const plantSelect = () => {
   const [enviroments, setEnviroments] = useState<EnviromentProps[]>([]);
   const [plants, setPlants] = useState<PlantProps[]>([]);
+  const [filteredPlants, setFilteredPlants] = useState<PlantProps[]>([]);
   const [enviromentsSelected, setEnviromentsSelected] = useState("all");
 
   const handleEnviromentsSelected = (environment: string) => {
     setEnviromentsSelected(environment);
+    console.log(environment, "environment");
+    if (environment === "all") return setFilteredPlants(plants);
+    console.log(plants, "plants");
+
+    const filtered = plants.filter((plant) =>
+      plant.environments.includes(environment)
+    );
+
+    console.log(filtered, "filtered");
+    setFilteredPlants(filtered);
   };
 
   const getList = async () => {
@@ -92,7 +103,7 @@ const plantSelect = () => {
       </View>
       <View style={styles.plants}>
         <FlatList
-          data={plants}
+          data={filteredPlants}
           showsVerticalScrollIndicator={false}
           numColumns={2}
           contentContainerStyle={styles.contentContainerStyle}
