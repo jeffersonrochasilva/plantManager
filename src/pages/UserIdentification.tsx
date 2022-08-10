@@ -10,10 +10,12 @@ import {
   TouchableWithoutFeedback,
   Platform,
   Keyboard,
+  Alert,
 } from "react-native";
 import fonts from "../styles/fonts";
 import Button from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const UserIdentification = () => {
   const navigation = useNavigation();
@@ -35,7 +37,9 @@ const UserIdentification = () => {
     setName(value);
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
+    if (!name) return Alert.alert("Me diz como chamar você 😢");
+    await AsyncStorage.setItem("@plantManager:user", name);
     //@ts-ignore
     navigation.navigate("Confirmation");
   }
