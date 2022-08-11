@@ -8,6 +8,7 @@ import { Welcome } from "../pages/Welcome";
 import Confirmation from "../pages/Confirmation";
 import UserIdentification from "../pages/UserIdentification";
 import plantSelect from "../pages/PlantSelect";
+import PlantSave from "../pages/PlantSave";
 
 const stackRoutes = createStackNavigator();
 
@@ -30,7 +31,10 @@ const appRoutes: React.FC = () => {
       />
 
       <stackRoutes.Screen name="Confirmation" component={Confirmation} />
+
       <stackRoutes.Screen name="plantSelect" component={plantSelect} />
+
+      <stackRoutes.Screen name="PlantSave" component={PlantSave} />
     </stackRoutes.Navigator>
   );
 };

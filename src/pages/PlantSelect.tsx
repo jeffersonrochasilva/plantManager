@@ -14,6 +14,7 @@ import EnviromentButton from "../components/EnviromentButton";
 import api from "../services/api";
 import { PlantCardPrimary } from "../components/PlantCardPrimary";
 import { Load } from "../components/Load";
+import { useNavigation } from "@react-navigation/core";
 
 interface EnviromentProps {
   key: string;
@@ -42,7 +43,8 @@ const plantSelect = () => {
 
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [loadedAll, setLoadedAll] = useState(false);
+
+  const navigation = useNavigation();
 
   const handleEnviromentsSelected = (environment: string) => {
     setEnviromentsSelected(environment);
@@ -104,6 +106,10 @@ const plantSelect = () => {
     setPage((oldValue) => oldValue + 1);
     getListPlant();
   }
+  function andlePlantSelected(plant: PlantProps) {
+    //@ts-ignore
+    navigation.navigate("PlantSave", { plant });
+  }
 
   useEffect(() => {
     getList();
@@ -123,6 +129,7 @@ const plantSelect = () => {
       <View>
         <FlatList
           data={enviroments}
+          keyExtractor={(item) => String(item.key)}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.enviromentList}
@@ -138,7 +145,13 @@ const plantSelect = () => {
       <View style={styles.plants}>
         <FlatList
           data={filteredPlants}
-          renderItem={({ item }) => <PlantCardPrimary data={item} />}
+          keyExtractor={(item) => String(item.id)}
+          renderItem={({ item }) => (
+            <PlantCardPrimary
+              data={item}
+              onPress={() => andlePlantSelected(item)}
+            />
+          )}
           showsVerticalScrollIndicator={false}
           numColumns={2}
           onEndReachedThreshold={0.1}

@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from "react-native";
 import Lottie from "lottie-react-native";
 
 import loadAnimation from "../assets/load.json";
+import colors from "../styles/colors";
 
 const Load = () => {
   return (
@@ -30,8 +31,8 @@ const styles = StyleSheet.create({
     height: 200,
   },
   animations: {
-    color: "red",
-    fontSize: 32,
+    color: colors.green,
+    fontSize: 16,
   },
 });
 
